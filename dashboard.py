@@ -2,19 +2,21 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from IPython.display import display, HTML
+from pathlib import Path
 
 st.set_page_config(page_title="Dashboard Kualitas Udara", layout="wide")
 
-@st.cache_data 
+@st.cache_data
 def load_data(file_name, station_name):
     df = pd.read_csv(file_name)
     df['date'] = pd.to_datetime(df[['year', 'month', 'day']])
-    df['Station'] = station_name 
+    df['Station'] = station_name
     return df
 
-df_A = load_data(r"C:\VSCode\dashboard\Aq_Ao_clean.csv", "Aotizhongxin")
-df_B = load_data(r"C:\VSCode\dashboard\Aq_Ch_clean.csv", "Changping")
+BASE_DIR = Path(__file__).resolve().parent
+
+df_A = load_data(BASE_DIR / "Aq_Ao_clean.csv", "Aotizhongxin")
+df_B = load_data(BASE_DIR / "Aq_Ch_clean.csv", "Changping")
 
 df_all = pd.concat([df_A, df_B])
 
